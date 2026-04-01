@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Начало{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Добре дошли в ErmaAutoHub</h1>
+
+<div class="card" style="margin-bottom: 24px;">
+    <h2 style="margin-top: 0; color: #2b587a;">Платформа за автомобилни обяви</h2>
+    
+
+    {% if not user.is_authenticated %}
+        <p>
+        Разгледайте наличните автомобили, сравнете различни предложения и намерете
+        подходящата обява за вас.
+        </p>
+        <p style="color: #5f7d97;">
+            За да виждате цените на автомобилите и да публикувате свои обяви,
+            е необходимо да имате профил.
+        </p>
+
+        <div style="margin-top: 18px; display: flex; gap: 12px; flex-wrap: wrap;">
+            <a href="{% url 'register' %}" class="button">Регистрация</a>
+            <a href="{% url 'login' %}" class="button button-secondary">Вход</a>
+        </div>
+    {% else %}
+        <div style="margin-top: 18px; display: flex; gap: 12px; flex-wrap: wrap;">
+            <a href="{% url 'car-create' %}" class="button button-secondary">Добави обява</a>
+            <a href="{% url 'car-list' %}" class="button">Виж всички автомобили</a>
+            
+        </div>
+    {% endif %}
+</div>
+
+<h2 class="page-title" style="font-size: 28px;">Последни обяви</h2>
+
+{% if latest_cars %}
+    <div class="cards-grid">
+        {% for car in latest_cars %}
+            <div class="card car-card">
+                {% include 'includes/car-card.html' with car=car %}
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-message">
+        Все още няма публикувани автомобили.
+    </div>
+{% endif %}
+{% endblock %}

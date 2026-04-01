@@ -1,0 +1,80 @@
+{% load static navigation_tags %}
+{% with current_url=request.resolver_match.url_name %}
+<nav style="background-color: #d9eefb; border-bottom: 1px solid #bfd9ec;">
+    <div class="container" style="padding: 14px 0;">
+        <div class="navbar-shell">
+            <div class="navbar-head">
+                <a href="{% url 'home' %}" class="navbar-brand navbar-brand-wrap">
+                    <img src="{% static 'images/navbar-car.jpg' %}" alt="ErmaAutoHub" class="navbar-logo">
+                    <span>ErmaAutoHub</span>
+                </a>
+
+                {% if user.is_authenticated %}
+                    <span class="nav-user">Потребител: {{ user.username }}</span>
+                {% endif %}
+            </div>
+
+            <nav class="top-nav">
+                {% nav_match current_url 'home' as is_home %}
+                <a href="{% url 'home' %}" class="nav-btn {% if is_home %}active{% endif %}" {% if is_home %}aria-current="page"{% endif %}>Начало</a>
+
+                {% nav_match current_url 'car-list,car-details,car-image-list,car-image-create,car-image-edit,car-image-delete' as is_cars %}
+                <a href="{% url 'car-list' %}" class="nav-btn {% if is_cars %}active{% endif %}" {% if is_cars %}aria-current="page"{% endif %}>Автомобили</a>
+
+                {% if user.is_authenticated %}
+                    {% if is_dealer %}
+                        {% nav_match current_url 'car-create' as is_car_create %}
+                        <a href="{% url 'car-create' %}" class="nav-btn {% if is_car_create %}active{% endif %}" {% if is_car_create %}aria-current="page"{% endif %}>Добави обява</a>
+
+                        {% nav_match current_url 'my-cars,car-edit,car-delete,car-image-list,car-image-create,car-image-edit,car-image-delete' as is_my_cars %}
+                        <a href="{% url 'my-cars' %}" class="nav-btn {% if is_my_cars %}active{% endif %}" {% if is_my_cars %}aria-current="page"{% endif %}>Моите обяви</a>
+
+                        {% nav_match current_url 'seller-inquiries' as is_received_inquiries %}
+                        <a href="{% url 'seller-inquiries' %}" class="nav-btn {% if is_received_inquiries %}active{% endif %}" {% if is_received_inquiries %}aria-current="page"{% endif %}>Получени запитвания</a>
+
+                        {% nav_match current_url 'my-inquiries,inquiry-details,inquiry-edit,inquiry-delete' as is_sent_inquiries %}
+                        <a href="{% url 'my-inquiries' %}" class="nav-btn {% if is_sent_inquiries %}active{% endif %}" {% if is_sent_inquiries %}aria-current="page"{% endif %}>Изпрати запитване</a>
+
+                        {% nav_match current_url 'favorite-cars,add-favorite,remove-favorite' as is_favorites %}
+                        <a href="{% url 'favorite-cars' %}" class="nav-btn {% if is_favorites %}active{% endif %}" {% if is_favorites %}aria-current="page"{% endif %}>Любими</a>
+                    {% endif %}
+
+                    {% if not is_admin %}
+                        {% nav_match current_url 'profile-details,profile-edit' as is_profile %}
+                        <a href="{% url 'profile-details' %}" class="nav-btn {% if is_profile %}active{% endif %}" {% if is_profile %}aria-current="page"{% endif %}>Профил</a>
+                    {% endif %}
+
+                    {% if is_admin %}
+                        <a href="/admin/" class="nav-btn">Админ панел</a>
+                    {% endif %}
+
+                    {% if is_moderator %}
+                        {% nav_match current_url 'brand-list,brand-create,brand-edit,brand-delete' as is_brands %}
+                        <a href="{% url 'brand-list' %}" class="nav-btn {% if is_brands %}active{% endif %}" {% if is_brands %}aria-current="page"{% endif %}>Добави марки</a>
+
+                        {% nav_match current_url 'car-model-list,car-model-create,car-model-edit,car-model-delete' as is_models %}
+                        <a href="{% url 'car-model-list' %}" class="nav-btn {% if is_models %}active{% endif %}" {% if is_models %}aria-current="page"{% endif %}>Добави модели</a>
+
+                        {% nav_match current_url 'feature-list,feature-create,feature-edit,feature-delete' as is_features %}
+                        <a href="{% url 'feature-list' %}" class="nav-btn {% if is_features %}active{% endif %}" {% if is_features %}aria-current="page"{% endif %}>Добави екстри</a>
+
+                        {% nav_match current_url 'pending-cars,car-approve' as is_pending %}
+                        <a href="{% url 'pending-cars' %}" class="nav-btn {% if is_pending %}active{% endif %}" {% if is_pending %}aria-current="page"{% endif %}>Чакащи обяви</a>
+                    {% endif %}
+
+                    <form method="post" action="{% url 'logout' %}" class="logout-form">
+                        {% csrf_token %}
+                        <button type="submit" class="nav-btn logout-btn">Изход</button>
+                    </form>
+                {% else %}
+                    {% nav_match current_url 'register' as is_register %}
+                    <a href="{% url 'register' %}" class="nav-btn {% if is_register %}active{% endif %}" {% if is_register %}aria-current="page"{% endif %}>Регистрация</a>
+
+                    {% nav_match current_url 'login' as is_login %}
+                    <a href="{% url 'login' %}" class="nav-btn {% if is_login %}active{% endif %}" {% if is_login %}aria-current="page"{% endif %}>Вход</a>
+                {% endif %}
+            </nav>
+        </div>
+    </div>
+</nav>
+{% endwith %}
