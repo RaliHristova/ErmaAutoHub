@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Любими автомобили{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Любими автомобили</h1>
+
+{% if favorites %}
+    <div class="cards-grid">
+        {% for favorite in favorites %}
+            <div class="card car-card">
+                {% include 'includes/car-card.html' with car=favorite.car %}
+
+                <form method="post" action="{% url 'remove-favorite' favorite.car.pk %}" style="margin-top: 14px;">
+                    {% csrf_token %}
+                    <button type="submit" class="button button-secondary">Премахни от любими</button>
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-message">
+        Все още нямате добавени любими автомобили.
+    </div>
+{% endif %}
+{% endblock %}

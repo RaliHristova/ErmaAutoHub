@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Моят профил{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Моят профил</h1>
+
+<div class="card">
+    <h2 style="margin-top: 0; color: #2b587a;">{{ request.user.username }}</h2>
+
+    <div class="info-row">
+        <span class="info-label">Имейл:</span>
+        <span>{{ request.user.email }}</span>
+    </div>
+
+    <div class="info-row">
+        <span class="info-label">Телефон:</span>
+        <span>{{ object.phone_number|default:"Няма въведен телефон" }}</span>
+    </div>
+
+    <div class="info-row">
+        <span class="info-label">Населено място:</span>
+        <span>{{ object.location|default:"Няма въведена локация" }}</span>
+    </div>
+
+    <div class="info-row">
+        <span class="info-label">Търговец:</span>
+        <span>{{ object.is_dealer|yesno:"Да,Не" }}</span>
+    </div>
+
+    <div class="info-row">
+        <span class="info-label">Описание:</span>
+        <span>{{ object.info|default:"Няма добавено описание." }}</span>
+    </div>
+
+    {% with favorite_brands=object.favorite_brands.all %}
+        <div class="info-row">
+            <span class="info-label">Любими марки:</span>
+            {% if favorite_brands %}
+                <div class="badge-list" style="margin-top: 8px;">
+                    {% for brand in favorite_brands %}
+                        <span class="badge-item">{{ brand.name }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <span>Няма избрани любими марки.</span>
+            {% endif %}
+        </div>
+    {% endwith %}
+
+    <div style="margin-top: 20px;">
+        <a href="{% url 'profile-edit' %}" class="button">Редактирай профила</a>
+    </div>
+</div>
+{% endblock %}
