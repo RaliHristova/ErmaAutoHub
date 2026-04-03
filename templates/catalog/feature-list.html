@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Екстри{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Екстри</h1>
+
+<div style="margin-bottom: 20px;">
+    <a href="{% url 'feature-create' %}" class="button">Добави екстра</a>
+</div>
+
+{% if object_list %}
+    <div class="cards-grid">
+        {% for feature in object_list %}
+            <div class="card">
+                <h3 style="margin-top: 0; color: #2b587a;">{{ feature.name }}</h3>
+
+                <div style="margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap;">
+                    <a href="{% url 'feature-edit' feature.pk %}" class="button">Редактирай</a>
+                    <a href="{% url 'feature-delete' feature.pk %}" class="button button-secondary">Изтрий</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-message">
+        Няма добавени екстри.
+    </div>
+{% endif %}
+{% endblock %}

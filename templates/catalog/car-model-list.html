@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Модели{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Модели</h1>
+
+<div style="margin-bottom: 20px;">
+    <a href="{% url 'car-model-create' %}" class="button">Добави модел</a>
+</div>
+
+{% if object_list %}
+    <div class="cards-grid">
+        {% for car_model in object_list %}
+            <div class="card">
+                <h3 style="margin-top: 0; color: #2b587a;">{{ car_model.name }}</h3>
+                <p><strong>Марка:</strong> {{ car_model.brand.name }}</p>
+
+                <div style="margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap;">
+                    <a href="{% url 'car-model-edit' car_model.pk %}" class="button">Редактирай</a>
+                    <a href="{% url 'car-model-delete' car_model.pk %}" class="button button-secondary">Изтрий</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-message">
+        Няма добавени модели.
+    </div>
+{% endif %}
+{% endblock %}

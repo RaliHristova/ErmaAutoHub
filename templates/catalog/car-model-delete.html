@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Изтриване на модел{% endblock %}
+
+{% block content %}
+<div class="form-box" style="max-width: 650px;">
+    <h1 class="page-title text-center">Изтриване на модел</h1>
+
+    <div style="padding: 14px; border-radius: 8px; margin-bottom: 20px; background-color: #eef7fd; border: 1px solid #cfe4f3; color: #2b587a;">
+        Сигурни ли сте, че искате да изтриете модела <strong>{{ object.name }}</strong> от марка <strong>{{ object.brand.name }}</strong>?
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+            <button type="submit" class="button">Потвърди изтриването</button>
+            <a href="{% url 'car-model-list' %}" class="button button-secondary">Отказ</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

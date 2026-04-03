@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Марки{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Марки</h1>
+
+<div style="margin-bottom: 20px;">
+    <a href="{% url 'brand-create' %}" class="button">Добави марка</a>
+</div>
+
+{% if object_list %}
+    <div class="cards-grid">
+        {% for brand in object_list %}
+            <div class="card">
+                <h3 style="margin-top: 0; color: #2b587a;">{{ brand.name }}</h3>
+                <p><strong>Slug:</strong> {{ brand.slug }}</p>
+
+                <div style="margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap;">
+                    <a href="{% url 'brand-edit' brand.pk %}" class="button">Редактирай</a>
+                    <a href="{% url 'brand-delete' brand.pk %}" class="button button-secondary">Изтрий</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-message">
+        Няма добавени марки.
+    </div>
+{% endif %}
+{% endblock %}
