@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Галерия на автомобил{% endblock %}
+
+{% block content %}
+<div class="actions-row" style="justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <div>
+        <h1 class="page-title" style="margin-bottom: 6px;">Галерия на автомобил</h1>
+        <div class="muted-text">{{ car.title }}</div>
+    </div>
+    <div class="actions-row">
+        <a href="{% url 'car-image-create' car.pk %}" class="button">Добави снимка</a>
+        <a href="{% url 'car-details' car.pk %}" class="button button-secondary">Назад към обявата</a>
+    </div>
+</div>
+
+{% if object_list %}
+    <div class="cards-grid">
+        {% for image in object_list %}
+            <div class="card">
+                <img src="{{ image.image.url }}"
+                     alt="{{ image.alt_text|default:car.title }}"
+                     class="gallery-thumb gallery-thumb-large">
+                <p><strong>Описание:</strong> {{ image.alt_text|default:"Няма описание" }}</p>
+
+                <div class="actions-row">
+                    <a href="{% url 'car-image-edit' image.pk %}" class="button button-secondary">Редактирай</a>
+                    <a href="{% url 'car-image-delete' image.pk %}" class="button button-danger">Изтрий</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-message">
+        Все още няма добавени допълнителни снимки.
+    </div>
+{% endif %}
+{% endblock %}

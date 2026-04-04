@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Моите обяви{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Моите обяви</h1>
+
+{% if object_list %}
+    <div class="cards-grid">
+        {% for car in object_list %}
+            <div class="card car-card">
+                {% include 'includes/car-card.html' with car=car %}
+                <p style="margin-top: 12px;">
+                    <strong>Одобрена:</strong>
+                    {% if car.is_approved %}
+                        Да
+                    {% else %}
+                        Не
+                    {% endif %}
+                </p>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-message">
+        Все още нямате публикувани обяви.
+    </div>
+{% endif %}
+{% endblock %}

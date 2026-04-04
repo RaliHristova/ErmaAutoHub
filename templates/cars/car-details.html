@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load car_tags %}
+
+{% block title %}Детайли за автомобил{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Детайли за автомобил</h1>
+
+<div class="card">
+    <div class="details-grid">
+        <div>
+            {% if object.main_image %}
+                <img src="{{ object.main_image.url }}"
+                     alt="{{ object.title }}"
+                     style="width: 100%; border-radius: 10px; border: 1px solid #d7e8f5;">
+            {% endif %}
+
+            {% if object.images.all %}
+                <div style="margin-top: 16px;">
+                    <div class="info-label" style="margin-bottom: 10px;">Галерия</div>
+                    <div class="gallery-grid">
+                        {% for image in object.images.all %}
+                            <img src="{{ image.image.url }}"
+                                 alt="{{ image.alt_text|default:object.title }}"
+                                 class="gallery-thumb">
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        <div>
+            <h2 style="margin-top: 0; color: #2b587a;">{{ object.title }}</h2>
+
+            <div class="info-row"><span class="info-label">Марка:</span> {{ object.brand.name }}</div>
+            <div class="info-row"><span class="info-label">Модел:</span> {{ object.car_model.name }}</div>
+            <div class="info-row"><span class="info-label">Година:</span> {{ object.year }}</div>
+            <div class="info-row"><span class="info-label">Пробег:</span> {{ object.mileage }} км</div>
+            <div class="info-row"><span class="info-label">Гориво:</span> {{ object.get_fuel_type_display }}</div>
+            <div class="info-row"><span class="info-label">Скоростна кутия:</span> {{ object.get_transmission_display }}</div>
+            <div class="info-row"><span class="info-label">Конски сили:</span> {{ object.horsepower }}</div>
+            <div class="info-row"><span class="info-label">Цвят:</span> {{ object.color }}</div>
+            <div class="info-row"><span class="info-label">Продавач:</span> {{ object.owner.username }}</div>
+
+            <div class="info-row">
+                <span class="info-label">Цена:</span>
+                {% if user.is_authenticated %}
+                    {{ object.price|currency_eur }}
+                {% else %}
+                    <span class="muted-text">Влезте в профила си, за да видите цената</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="info-row">
+        <span class="info-label">Описание:</span>
+        <div style="margin-top: 8px;">{{ object.description }}</div>
+    </div>
+
+    {% if object.features.all %}
+        <div style="margin-top: 18px;">
+            <div class="info-label" style="margin-bottom: 10px;">Екстри:</div>
+            <div class="badge-list">
+                {% for feature in object.features.all %}
+                    <span class="badge-item">{{ feature.name }}</span>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+        <div class="actions-row" style="margin-top: 20px;">
+            {% if is_favorite %}
+                <form method="post" action="{% url 'remove-favorite' object.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" class="button button-secondary">Премахни от любими</button>
+                </form>
+            {% else %}
+                <form method="post" action="{% url 'add-favorite' object.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" class="button">Добави в любими</button>
+                </form>
+            {% endif %}
+
+            {% if user != object.owner %}
+                <a href="{% url 'inquiry-create' object.pk %}" class="button button-secondary">Изпрати запитване</a>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    {% if user.is_authenticated and user == object.owner %}
+        <div class="actions-row" style="margin-top: 20px;">
+            <a href="{% url 'car-edit' object.pk %}" class="button">Редактирай</a>
+            <a href="{% url 'car-image-list' object.pk %}" class="button button-secondary">Управлявай галерия</a>
+            <a href="{% url 'car-delete' object.pk %}" class="button button-danger">Изтрий</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

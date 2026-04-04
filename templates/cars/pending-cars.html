@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load car_tags %}
+
+{% block title %}Чакащи одобрение обяви{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Чакащи одобрение обяви</h1>
+
+{% if object_list %}
+    <div class="cards-grid">
+        {% for car in object_list %}
+            <div class="card car-card">
+                {% if car.main_image %}
+                    <img src="{{ car.main_image.url }}" alt="{{ car.title }}">
+                {% endif %}
+
+                <h3 style="margin-top: 0; color: #2b587a;">{{ car.title }}</h3>
+
+                <p><strong>Марка:</strong> {{ car.brand.name }}</p>
+                <p><strong>Модел:</strong> {{ car.car_model.name }}</p>
+                <p><strong>Година:</strong> {{ car.year }}</p>
+                <p><strong>Пробег:</strong> {{ car.mileage }} км</p>
+                <p><strong>Продавач:</strong> {{ car.owner.username }}</p>
+                <p><strong>Цена:</strong> {{ car.price|currency_eur }}</p>
+
+                <div style="margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap;">
+                    <a href="{% url 'car-details' car.pk %}" class="button button-secondary">Детайли</a>
+
+                    {% if is_moderator %}
+                        <a href="{% url 'car-approve' car.pk %}" class="button">Одобри</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-message">
+        Няма обяви, които чакат одобрение.
+    </div>
+{% endif %}
+{% endblock %}

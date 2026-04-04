@@ -1,0 +1,30 @@
+{% load car_tags %}
+{% if car.main_image %}
+    <img src="{{ car.main_image.url }}" alt="{{ car.title }}">
+{% endif %}
+
+<h3 style="margin-top: 0; color: #2b587a;">{{ car.title }}</h3>
+
+<p><strong>Марка:</strong> {{ car.brand.name }}</p>
+<p><strong>Модел:</strong> {{ car.car_model.name }}</p>
+<p><strong>Година:</strong> {{ car.year }}</p>
+<p><strong>Пробег:</strong> {{ car.mileage }} км</p>
+<p><strong>Гориво:</strong> {{ car.get_fuel_type_display }}</p>
+<p><strong>Скоростна кутия:</strong> {{ car.get_transmission_display }}</p>
+
+{% if user.is_authenticated %}
+    <p><strong>Цена:</strong> {{ car.price|currency_eur }}</p>
+{% else %}
+    <p style="color: #6b87a0;">
+        <strong>Цена:</strong> Влезте в профила си, за да видите цената.
+    </p>
+{% endif %}
+
+<div style="margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap;">
+    <a href="{% url 'car-details' car.pk %}" class="button button-secondary">Детайли</a>
+
+    {% if user.is_authenticated and user == car.owner %}
+        <a href="{% url 'car-edit' car.pk %}" class="button">Редактирай</a>
+        <a href="{% url 'car-delete' car.pk %}" class="button button-secondary">Изтрий</a>
+    {% endif %}
+</div>

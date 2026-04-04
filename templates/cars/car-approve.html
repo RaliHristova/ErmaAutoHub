@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Одобряване на обява{% endblock %}
+
+{% block content %}
+<div class="form-box" style="max-width: 700px;">
+    <h1 class="page-title text-center">Одобряване на обява</h1>
+
+    <form method="post">
+        {% csrf_token %}
+
+        {% for field in form %}
+            <div class="form-group">
+                {% if field.name == 'is_approved' %}
+                    <div class="checkbox-row">
+                        {{ field }}
+                        <label class="form-label" for="{{ field.id_for_label }}" style="margin: 0;">{{ field.label }}</label>
+                    </div>
+                {% else %}
+                    <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                {% endif %}
+
+                {% for error in field.errors %}
+                    <div class="form-error">{{ error }}</div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+        <div class="text-center">
+            <button type="submit" class="button">Запази</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
