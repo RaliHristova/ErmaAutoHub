@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Изтриване на запитване{% endblock %}
+
+{% block content %}
+<div class="form-box" style="max-width: 620px;">
+    <h1 class="page-title text-center">Изтриване на запитване</h1>
+
+    <div class="card" style="margin-bottom: 20px;">
+        <p><strong>Автомобил:</strong> {{ object.car.title }}</p>
+        <p><strong>Телефон:</strong> {{ object.phone_number }}</p>
+        <p style="margin-bottom: 0;"><strong>Съобщение:</strong> {{ object.message|truncatechars:120 }}</p>
+    </div>
+
+    <form method="post" class="text-center">
+        {% csrf_token %}
+        <p>Сигурни ли сте, че искате да изтриете това запитване?</p>
+
+        <div class="actions-row" style="justify-content: center;">
+            <button type="submit" class="button button-danger">Потвърди изтриване</button>
+            <a href="{% url 'inquiry-details' object.pk %}" class="button button-secondary">Отказ</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Детайли за запитване{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Детайли за запитване</h1>
+
+<div class="card">
+    <h2 style="margin-top: 0; color: #2b587a;">{{ object.car.title }}</h2>
+
+    <div class="info-row"><span class="info-label">Автомобил:</span> {{ object.car.brand.name }} {{ object.car.car_model.name }}</div>
+    <div class="info-row"><span class="info-label">Телефон:</span> {{ object.phone_number }}</div>
+    <div class="info-row"><span class="info-label">Изпратено на:</span> {{ object.created_at|date:"d.m.Y H:i" }}</div>
+
+    <div class="divider"></div>
+
+    <div class="info-row">
+        <span class="info-label">Съобщение:</span>
+        <div style="margin-top: 8px;">{{ object.message }}</div>
+    </div>
+
+    <div class="actions-row" style="margin-top: 20px;">
+        <a href="{% url 'inquiry-edit' object.pk %}" class="button">Редактирай</a>
+        <a href="{% url 'inquiry-delete' object.pk %}" class="button button-danger">Изтрий</a>
+        <a href="{% url 'my-inquiries' %}" class="button button-secondary">Назад</a>
+    </div>
+</div>
+{% endblock %}

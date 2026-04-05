@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Моите запитвания{% endblock %}
+
+{% block content %}
+<div class="actions-row" style="justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <h1 class="page-title" style="margin-bottom: 0;">Моите запитвания</h1>
+    <a href="{% url 'seller-inquiries' %}" class="button button-secondary">Получени запитвания</a>
+</div>
+
+{% if object_list %}
+    <div class="cards-grid">
+        {% for inquiry in object_list %}
+            <div class="card">
+                <h3 style="margin-top: 0; color: #2b587a;">{{ inquiry.car.title }}</h3>
+                <p><strong>Марка:</strong> {{ inquiry.car.brand.name }} {{ inquiry.car.car_model.name }}</p>
+                <p><strong>Телефон:</strong> {{ inquiry.phone_number }}</p>
+                <p><strong>Дата:</strong> {{ inquiry.created_at|date:"d.m.Y H:i" }}</p>
+                <p style="margin-bottom: 18px;"><strong>Съобщение:</strong> {{ inquiry.message|truncatechars:90 }}</p>
+
+                <div class="actions-row">
+                    <a href="{% url 'inquiry-details' inquiry.pk %}" class="button">Детайли</a>
+                    <a href="{% url 'inquiry-edit' inquiry.pk %}" class="button button-secondary">Редактирай</a>
+                    <a href="{% url 'inquiry-delete' inquiry.pk %}" class="button button-danger">Изтрий</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-message">
+        Все още нямате изпратени запитвания.
+    </div>
+{% endif %}
+{% endblock %}

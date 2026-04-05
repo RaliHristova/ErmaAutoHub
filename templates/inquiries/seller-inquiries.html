@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Получени запитвания{% endblock %}
+
+{% block content %}
+<div class="actions-row" style="justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <h1 class="page-title" style="margin-bottom: 0;">Получени запитвания</h1>
+    <a href="{% url 'my-inquiries' %}" class="button button-secondary">Моите запитвания</a>
+</div>
+
+{% if object_list %}
+    <div class="cards-grid">
+        {% for inquiry in object_list %}
+            <div class="card">
+                <h3 style="margin-top: 0; color: #2b587a;">{{ inquiry.car.title }}</h3>
+
+                <p><strong>Изпратено от:</strong> {{ inquiry.sender.username }}</p>
+                <p><strong>Телефон:</strong> {{ inquiry.phone_number }}</p>
+                <p><strong>Дата:</strong> {{ inquiry.created_at|date:"d.m.Y H:i" }}</p>
+                <p><strong>Съобщение:</strong></p>
+                <p style="margin-bottom: 0;">{{ inquiry.message }}</p>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-message">
+        Все още нямате получени запитвания.
+    </div>
+{% endif %}
+{% endblock %}
