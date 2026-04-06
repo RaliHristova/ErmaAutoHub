@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}Страницата не е намерена{% endblock %}
+
+{% block content %}
+<div class="form-box text-center">
+    <h1 class="page-title">404</h1>
+    <p class="subtitle">Съжаляваме, но страницата, която търсите, не беше намерена.</p>
+    <a href="{% url 'home' %}" class="button">Към началото</a>
+</div>
+{% endblock %}

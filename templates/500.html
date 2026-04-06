@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}Възникна грешка{% endblock %}
+
+{% block content %}
+<div class="form-box text-center">
+    <h1 class="page-title">500</h1>
+    <p class="subtitle">Възникна неочаквана грешка в приложението.</p>
+    <a href="{% url 'home' %}" class="button">Към началото</a>
+</div>
+{% endblock %}
