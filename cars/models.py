@@ -1,6 +1,6 @@
 
 from datetime import datetime
-
+from cloudinary.models import CloudinaryField
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator
@@ -57,7 +57,7 @@ class Car(models.Model):
     horsepower = models.PositiveIntegerField()
     color = models.CharField(max_length=30)
     description = models.TextField()
-    main_image = models.ImageField(upload_to='cars/')
+    main_image = CloudinaryField('image', blank=True, null=True)
     is_published = models.BooleanField(default=True)
     is_approved = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
